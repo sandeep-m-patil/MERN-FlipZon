@@ -8,7 +8,7 @@
 		"build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
 		"start": "NODE_ENV=production node backend/server.js"
 	},
-	"type": "module",
+	"type":"module",
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
