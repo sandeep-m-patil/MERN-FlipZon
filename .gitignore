@@ -53,3 +53,4 @@ debug.log
 # Production build files
 /build
 /dist
+.vercel
