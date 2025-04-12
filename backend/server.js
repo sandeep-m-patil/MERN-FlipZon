@@ -33,6 +33,11 @@ if (process.env.NODE_ENV === "production") {
 // Routes
 app.use('/api/products', router);
 
+// Basic route for testing
+app.get('/', (req, res) => {
+    res.json({ message: 'API is running...' });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
