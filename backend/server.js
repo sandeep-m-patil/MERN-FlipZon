@@ -23,7 +23,7 @@ app.use('/api/products', router);
 
 // Basic route for testing
 app.get('/', (req, res) => {
-    res.json({ message: 'API is running...' });
+    res.json('API is running...');
 });
 
 const PORT = process.env.PORT || 5000;
