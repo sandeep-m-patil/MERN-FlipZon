@@ -1,16 +1,10 @@
 import { useProductStore } from "../store/product";
 
 const ProductCard = ({ product }) => {
-    const { deleteProduct, updateProduct } = useProductStore();
+    const { deleteProduct } = useProductStore();
 
     const handleDeleteProduct = async (pid) => {
         const { success, message } = await deleteProduct(pid);
-        showToast(success, message);
-    };
-
-    const handleUpdateProduct = async (pid, updatedProduct) => {
-        const { success, message } = await updateProduct(pid, updatedProduct);
-        setIsOpen(false);
         showToast(success, message);
     };
 

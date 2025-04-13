@@ -22,7 +22,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4 py-12">
             <div className="flex flex-col items-center space-y-8">
                 <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-center">
-                    Current Products 🚀
+                    Products List
                 </h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full">
