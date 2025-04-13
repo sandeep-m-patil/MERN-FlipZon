@@ -10,9 +10,15 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-    origin: ['https://mern-flipzon.vercel.app/', 'http://localhost:5174'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: [
+        'https://mern-flipzon.vercel.app',
+        'https://mern-flipzon.vercel.app/',
+        'http://localhost:5173',
+        'http://localhost:5174'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Middleware
