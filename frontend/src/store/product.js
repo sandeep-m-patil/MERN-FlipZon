@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const API_URL = 'https://mern-flip-zon.vercel.app/';
+const API_URL = 'https://mern-flip-zon.vercel.app/api';
 
 export const useProductStore = create((set) => ({
     products: [],
