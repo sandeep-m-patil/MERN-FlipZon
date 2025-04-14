@@ -1,10 +1,22 @@
+import { useState } from "react";
 import { useProductStore } from "../store/product";
 
 const ProductCard = ({ product }) => {
-    const { deleteProduct } = useProductStore();
+    const [isEditing, setIsEditing] = useState(false);
+    const [updatedProduct, setUpdatedProduct] = useState(product);
+    const { deleteProduct, updateProduct } = useProductStore();
 
     const handleDeleteProduct = async (pid) => {
         const { success, message } = await deleteProduct(pid);
+        showToast(success, message);
+    };
+
+    const handleUpdateProduct = async (e) => {
+        e.preventDefault();
+        const { success, message } = await updateProduct(product._id, updatedProduct);
+        if (success) {
+            setIsEditing(false);
+        }
         showToast(success, message);
     };
 
@@ -18,8 +30,53 @@ const ProductCard = ({ product }) => {
         setTimeout(() => toast.remove(), 3000);
     };
 
+    if (isEditing) {
+        return (
+            <div className="bg-white rounded-lg shadow-lg p-4">
+                <form onSubmit={handleUpdateProduct} className="space-y-4">
+                    <input
+                        type="text"
+                        value={updatedProduct.name}
+                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        placeholder="Product Name"
+                    />
+                    <input
+                        type="number"
+                        value={updatedProduct.price}
+                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        placeholder="Price"
+                    />
+                    <input
+                        type="text"
+                        value={updatedProduct.image}
+                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        placeholder="Image URL"
+                    />
+                    <div className="flex space-x-2">
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setIsEditing(false)}
+                            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+
     return (
-        <div className="bg-white bg-whiterounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <img 
                 src={product.image} 
                 alt={product.name} 
@@ -28,11 +85,19 @@ const ProductCard = ({ product }) => {
 
             <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-                <p className="text-xl font-bold text-gray-600  mb-4">
+                <p className="text-xl font-bold text-gray-600 mb-4">
                     ${product.price}
                 </p>
 
                 <div className="flex space-x-2">
+                    <button
+                        onClick={() => setIsEditing(true)}
+                        className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-10 10a2 2 0 01-2.828 0l-4-4a2 2 0 112.828-2.828L6 13.172l8.586-8.586z" />
+                        </svg>
+                    </button>
                     <button
                         onClick={() => handleDeleteProduct(product._id)}
                         className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"

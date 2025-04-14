@@ -70,4 +70,29 @@ export const useProductStore = create((set) => ({
             return { success: false, message: error.message };
         }
     },
+    updatePoduct: async (pid, updatedProduct) => {
+        try {
+            const res = await fetch(`${API_URL}/products/${pid}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedProduct),
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to update product');
+            }
+
+            const data = await res.json();
+            set((state) => ({
+                products: state.products.map((product) =>
+                    product._id === pid ? { ...product, ...updatedProduct } : product
+                ),
+            }));
+            return { success: true, message: data.message };
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    }
 }));
