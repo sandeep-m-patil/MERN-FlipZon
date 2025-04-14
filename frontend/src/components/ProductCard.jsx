@@ -3,21 +3,53 @@ import { useProductStore } from "../store/product";
 
 const ProductCard = ({ product }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedProduct, setUpdatedProduct] = useState(product);
+    const [updatedProduct, setUpdatedProduct] = useState({
+        name: product.name,
+        price: product.price,
+        image: product.image
+    });
     const { deleteProduct, updateProduct } = useProductStore();
 
     const handleDeleteProduct = async (pid) => {
-        const { success, message } = await deleteProduct(pid);
-        showToast(success, message);
+        try {
+            const { success, message } = await deleteProduct(pid);
+            showToast(success, message);
+        } catch (error) {
+            showToast(false, "Failed to delete product");
+        }
     };
 
     const handleUpdateProduct = async (e) => {
         e.preventDefault();
-        const { success, message } = await updateProduct(product._id, updatedProduct);
-        if (success) {
-            setIsEditing(false);
+        try {
+            // Validate inputs
+            if (!updatedProduct.name || !updatedProduct.price || !updatedProduct.image) {
+                showToast(false, "All fields are required");
+                return;
+            }
+
+            const { success, message } = await updateProduct(product._id, {
+                ...updatedProduct,
+                price: Number(updatedProduct.price)
+            });
+
+            if (success) {
+                setIsEditing(false);
+                showToast(true, "Product updated successfully");
+            } else {
+                showToast(false, message || "Failed to update product");
+            }
+        } catch (error) {
+            showToast(false, "Error updating product");
         }
-        showToast(success, message);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUpdatedProduct(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const showToast = (success, message) => {
@@ -36,24 +68,32 @@ const ProductCard = ({ product }) => {
                 <form onSubmit={handleUpdateProduct} className="space-y-4">
                     <input
                         type="text"
+                        name="name"
                         value={updatedProduct.name}
-                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border rounded"
                         placeholder="Product Name"
+                        required
                     />
                     <input
                         type="number"
+                        name="price"
                         value={updatedProduct.price}
-                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border rounded"
                         placeholder="Price"
+                        min="0"
+                        step="0.01"
+                        required
                     />
                     <input
-                        type="text"
+                        type="url"
+                        name="image"
                         value={updatedProduct.image}
-                        onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border rounded"
                         placeholder="Image URL"
+                        required
                     />
                     <div className="flex space-x-2">
                         <button
