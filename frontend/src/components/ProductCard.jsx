@@ -22,16 +22,27 @@ const ProductCard = ({ product }) => {
     const handleUpdateProduct = async (e) => {
         e.preventDefault();
         try {
+            console.log('Updating product:', {
+                id: product._id,
+                updates: updatedProduct
+            });
+
             // Validate inputs
             if (!updatedProduct.name || !updatedProduct.price || !updatedProduct.image) {
                 showToast(false, "All fields are required");
                 return;
             }
 
-            const { success, message } = await updateProduct(product._id, {
+            // Format price as number and create update payload
+            const updatePayload = {
                 ...updatedProduct,
-                price: Number(updatedProduct.price)
-            });
+                price: parseFloat(updatedProduct.price)
+            };
+
+            console.log('Update payload:', updatePayload);
+
+            const { success, message } = await updateProduct(product._id, updatePayload);
+            console.log('Update response:', { success, message });
 
             if (success) {
                 setIsEditing(false);
@@ -40,7 +51,8 @@ const ProductCard = ({ product }) => {
                 showToast(false, message || "Failed to update product");
             }
         } catch (error) {
-            showToast(false, "Error updating product");
+            console.error('Update error:', error);
+            showToast(false, error.message || "Error updating product");
         }
     };
 
