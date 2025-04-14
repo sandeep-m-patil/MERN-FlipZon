@@ -147,7 +147,7 @@ const ProductCard = ({ product }) => {
                         className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-10 10a2 2 0 01-2.828 0l-4-4a2 2 0 112.828-2.828L6 13.172l8.586-8.586z" />
+                            <path d="M13.586 3.586a1 1 0 011.414 0l1.414 1.414a1 1 0 010 1.414L5.414 17.414a1 1 0 01-1.414 0L2.586 16l10-10zm-4 0a1 1 0 011.414 0l1.414 1.414a1 1 0 010 1.414L3.414 15.414a1 1 0 01-1.414 0L.586 14l9-9z" />
                         </svg>
                     </button>
                     <button
